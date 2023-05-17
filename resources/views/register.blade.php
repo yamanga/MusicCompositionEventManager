@@ -16,24 +16,20 @@
             <div class="navbar-nav collapse navbar-collapse">
                 <span class="navbar-text">music composition event manager</span>
             </div>
-            <ul class="navbar-nav ms-auto ">
-                <li class="nav-item">
-                    @auth
-                        <a href="#" class="btn btn-outiline-primary btn-sm">マイページ</a>
-                    @endauth
-                    @guest
-                        <a href="{{ route('login') }}" class="btn btn-outline-success btn-sm">ログイン</a>
-                    @endguest
-                </li>
-            </ul>
         </div>
     </nav>
-
     <div class="container my-4">
-        <h1>Music Composition Event manager</h1>
-        <h3>作曲イベントを簡単に開催・参加！</h3>
-        <p>ユーザー登録を行うことで簡単に作曲イベントを運営し
-            参加する事ができます。</p>
+        <h1 class="pb-4">ユーザー登録</h1>
+        <form class="row g-3 needs-validation" action="#" method="POST">
+            @csrf
+            <label for="email" class="form-label">メールアドレス</label>
+            <input type="email" class="form-control" id="email" name="email" required>
+            <label for="username" class="form-label">ユーザー名</label>
+            <input type="text" class="form-control" id="username" name="username" required>
+            <label for="password" class="form-label">パスワード</label>
+            <input type="password" class="form-control" id="password" name="password" required>
+            <button class="btn btn-primary" type="submit">登録</button>
+        </form>
     </div>
 </body>
 
