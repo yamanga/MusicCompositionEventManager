@@ -20,7 +20,7 @@
     </nav>
     <div class="container my-4">
         <h1 class="pb-4">ログイン</h1>
-        <form class="row g-3 needs-validation" action="#" method="POST">
+        <form class="row g-3 needs-validation" action="{{ route('login.post') }}" method="POST">
             @csrf
             <label for="email" class="form-label">メールアドレス</label>
             <input type="email" class="form-control" id="email" name="email" required>
@@ -28,7 +28,7 @@
             <input type="password" class="form-control" id="password" name="password" required>
             <button class="btn btn-primary" type="submit">ログイン</button>
         </form>
-        <p class="pt-3">ユーザー登録がまだの場合、<a href="{{ route('register') }}">ユーザー登録</a></p>
+        <p class="pt-3">ユーザー登録がまだの場合、<a href="{{ route('register.create') }}">ユーザー登録</a></p>
     </div>
 
 </body>

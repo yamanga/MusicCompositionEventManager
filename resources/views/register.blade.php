@@ -20,7 +20,7 @@
     </nav>
     <div class="container my-4">
         <h1 class="pb-4">ユーザー登録</h1>
-        <form class="row g-3 needs-validation" action="#" method="POST">
+        <form class="row g-3 needs-validation" action="{{ route('register.store') }}" method="POST">
             @csrf
             <label for="email" class="form-label">メールアドレス</label>
             <input type="email" class="form-control" id="email" name="email" required>
