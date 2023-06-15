@@ -18,22 +18,26 @@
             </div>
             <ul class="navbar-nav ms-auto ">
                 <li class="nav-item">
-                    @auth
-                        <a href="{{ route('mypage') }}" class="btn btn-success btn-sm">マイページ</a>
-                    @endauth
-                    @guest
-                        <a href="{{ route('login') }}" class="btn btn-outline-success btn-sm">ログイン</a>
-                    @endguest
+                    <a href="{{ route('mypage') }}" class="btn btn-success btn-sm">マイページ</a>
                 </li>
             </ul>
         </div>
     </nav>
 
     <div class="container my-4">
-        <h1>Music Composition Event manager</h1>
-        <h3>作曲イベントを簡単に開催・参加！</h3>
-        <p>ユーザー登録を行うことで簡単に作曲イベントを運営し
-            参加する事ができます。</p>
+        <h1>{{ Auth::user()->username }}</h1>
+
+        <div class="container-fluid pt-4">
+            <h5>主催イベント</h5>
+            @forelse (Auth::user()->events as $event)
+                <a class="fs-4" href="{{ route('event.show', $event->id) }}">{{ $event->title }}</a>
+                <br>
+            @empty
+                <p class="fs-4">なし</p>
+            @endforelse
+
+            <a href="{{ route('event.create') }}" class="btn btn-sm btn-primary">イベントを作成</a>
+        </div>
     </div>
 </body>
 
