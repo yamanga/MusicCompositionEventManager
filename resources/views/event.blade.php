@@ -31,10 +31,84 @@
 
     <div class="container my-4">
         <h1>{{ $eventinfo->title }}</h1>
+        <p class="fw-6">
+            @switch($eventinfo->status)
+                @case('participate')
+                    参加者募集中
+                @break
+
+                @case('submit')
+                    提出受付中
+                @break
+
+                @case('result')
+                    結果発表待ち
+                @break
+
+                @case('finished')
+                    終了
+                @break
+
+                @case('cancelled')
+                    中止
+                @break
+
+                @default
+                    エラー
+            @endswitch
+        </p>
         <p class="fs-5 text-end">イベント主催者　{{ $eventinfo->user->username }}</p>
         <p class="fs-6 fw-light text-center">参加期限　{{ date('Y/m/d H:i', strtotime($eventinfo->participate)) }}</p>
         <p class="fs-6 fw-light text-center">提出期限　{{ date('Y/m/d H:i', strtotime($eventinfo->submit)) }}</p>
         <p class="fs-4">{!! nl2br(e($eventinfo->detail)) !!}</p>
+        @switch($eventinfo->status)
+            @case('participate')
+                @guest
+                    <a href="{{ route('login') }}" class="btn btn-primary">ログインして参加</a>
+                @else
+                    @if ($eventinfo->participants->contains('id', Auth::user()->id))
+                        <a href="#" class="btn btn-primary">楽曲提出</a>
+                    @else
+                        <form action="{{ route('event.participate', $eventinfo->id) }}" method="POST">
+                            @csrf
+                            <button class="btn btn-primary" type="submit">イベントに参加</button>
+                        </form>
+                    @endif
+                @endguest
+            @break
+
+            @case('submit')
+                @guest
+                    <a href="{{ route('login') }}" class="btn btn-primary">ログインして提出</a>
+                @else
+                    @if ($eventinfo->participants->contains('id', Auth::user()->id))
+                        @if ($eventinfo->submits->contains('participant_id', Auth::user()->id))
+                            <p>楽曲提出済み</p>
+                        @else
+                            <a href="#" class="btn btn-primary">楽曲提出</a>
+                        @endif
+                    @else
+                        <p class="">イベントに参加していません</p>
+                    @endif
+                @endguest
+            @break
+
+            @case('result')
+                <p>結果発表待ちです</p>
+            @break
+
+            @case('finished')
+                <p>結果はこちら</p>
+            @break
+
+            @case('cancelled')
+                <p>イベントは中止されました</p>
+            @break
+
+            @default
+                <p>イベント状態にエラーが発生しています</p>
+        @endswitch
+
     </div>
 </body>
 

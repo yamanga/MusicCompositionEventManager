@@ -4,6 +4,7 @@ use Illuminate\Support\Facades\Route;
 use App\Http\Controllers\UserController;
 use App\Http\Controllers\LoginController;
 use App\Http\Controllers\EventController;
+use App\Http\Controllers\SubmitController;
 
 /*
 |--------------------------------------------------------------------------
@@ -31,4 +32,7 @@ Route::middleware('auth')->group(function(){
     })->name('mypage');
     Route::get('eventcreate', [EventController::class,'create'])->name('event.create');
     Route::post('eventcreate', [EventController::class,'store'])->name('event.store');
+    Route::get('events/{id}/submit', [SubmitController::class,'create'])->name('event.submit');
+    Route::post('events/{id}/submit', [SubmitController::class,'store'])->name('submit.store');
+    Route::post('events/{id}',[EventController::class,'participate'])->name('event.participate');
 });

@@ -5,6 +5,7 @@ namespace App\Http\Controllers;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Auth;
 use App\Models\Event;
+use App\Models\EventParticipant;
 
 class EventController extends Controller
 {
@@ -25,7 +26,8 @@ class EventController extends Controller
             'detail'=>$request['detail'],
             'participate'=>$request['participate'],
             'submit'=>$request['submit'],
-            'organizer_id'=>Auth::id()
+            'organizer_id'=>Auth::id(),
+            'status'=>'participate'
         ]);
 
         return redirect()->route('mypage');
@@ -35,5 +37,10 @@ class EventController extends Controller
         $eventinfo=Event::find($id);
 
         return view('event',compact('eventinfo'));
+    }
+
+    public function participate(string $id,Request $request){
+        Event::find($id)->participants->sync(Auth::user()->id,false);
+        return redirect()->route('event.show',$id);
     }
 }
