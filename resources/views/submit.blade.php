@@ -5,7 +5,7 @@
     <meta charset="UTF-8">
     <meta http-equiv="X-UA-Compatible" content="IE=edge">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>MCEM</title>
+    <title>楽曲提出 - MCEM</title>
     @vite(['resources/sass/app.scss', 'resources/js/app.js'])
 </head>
 
@@ -30,8 +30,11 @@
 
         <form class="row g-3 needs-validation" action="{{ route('submit.store', $eventinfo->id) }}" method="POST">
             @csrf
+            <label for="title" class="form-label">楽曲名</label>
+            <input type="text" class="form-control" id="title" name="title" value="{{ old('title') }}">
             <label for="link" class="form-label">リンク</label>
-            <input type="text" class="form-control" id="link" name="link" required>
+            <input type="text" class="form-control" id="link" name="link" value="{{ old('link') }}"
+                required>
 
             <button class="btn btn-primary" type="submit">提出</button>
         </form>

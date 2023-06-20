@@ -11,9 +11,12 @@ return new class extends Migration
      */
     public function up(): void
     {
-        Schema::table('events', function (Blueprint $table) {
-            //
-            $table->string('status')->nullable()->change();
+        Schema::create('results', function (Blueprint $table) {
+            $table->id();
+            $table->string('link')->nullable();
+            $table->foreignId('event_id')->constrained()->onDelete('cascade');
+            $table->string('comment')->nullable();
+            $table->timestamps();
         });
     }
 
@@ -22,9 +25,6 @@ return new class extends Migration
      */
     public function down(): void
     {
-        Schema::table('events', function (Blueprint $table) {
-            //
-            $table->string('status')->nullable(false)->change();
-        });
+        Schema::dropIfExists('results');
     }
 };

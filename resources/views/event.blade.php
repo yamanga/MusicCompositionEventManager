@@ -5,7 +5,7 @@
     <meta charset="UTF-8">
     <meta http-equiv="X-UA-Compatible" content="IE=edge">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>MCEM</title>
+    <title>{{ $eventinfo->title }} - MCEM</title>
     @vite(['resources/sass/app.scss', 'resources/js/app.js'])
 </head>
 
@@ -67,7 +67,11 @@
                     <a href="{{ route('login') }}" class="btn btn-primary">ログインして参加</a>
                 @else
                     @if ($eventinfo->participants->contains('id', Auth::user()->id))
-                        <a href="#" class="btn btn-primary">楽曲提出</a>
+                        @if ($eventinfo->submits->contains('participant_id', Auth::user()->id))
+                            <p>楽曲提出済み</p>
+                        @else
+                            <a href="{{ route('event.submit', $eventinfo->id) }}" class="btn btn-primary">楽曲提出</a>
+                        @endif
                     @else
                         <form action="{{ route('event.participate', $eventinfo->id) }}" method="POST">
                             @csrf
@@ -85,7 +89,7 @@
                         @if ($eventinfo->submits->contains('participant_id', Auth::user()->id))
                             <p>楽曲提出済み</p>
                         @else
-                            <a href="#" class="btn btn-primary">楽曲提出</a>
+                            <a href="{{ route('event.submit', $eventinfo->id) }}" class="btn btn-primary">楽曲提出</a>
                         @endif
                     @else
                         <p class="">イベントに参加していません</p>
@@ -99,6 +103,38 @@
 
             @case('finished')
                 <p>結果はこちら</p>
+                @switch($eventinfo->result_type)
+                    @case('table')
+                        <table class="table">
+                            <thead>
+                                <tr>
+                                    <th scope="col">ユーザー</th>
+                                    <th scope="col">楽曲</th>
+                                </tr>
+                            </thead>
+                            <tbody>
+                                @foreach ($eventinfo->participants as $user)
+                                    <td>{{ $user->username }}</td>
+                                    @if ($eventinfo->submits->contains('participant_id', $user->id))
+                                        <td>
+                                            <a
+                                                href="{{ $eventinfo->submits->where('participant_id', '=', $user->id)->sortByDesc('created_at')->first()->link }}">{{ $eventinfo->submits->where('participant_id', '=', $user->id)->sortByDesc('created_at')->first()->link }}</a>
+                                        </td>
+                                    @else
+                                        <td>未提出</td>
+                                    @endif
+                                @endforeach
+                            </tbody>
+                        </table>
+                    @break
+
+                    @case('link')
+                        <a href="{{ $eventinfo->result->link }}">{{ $eventinfo->result->link }}</a>
+                    @break
+
+                    @default
+                        <p>エラー</p>
+                @endswitch
             @break
 
             @case('cancelled')

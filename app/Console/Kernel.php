@@ -5,6 +5,7 @@ namespace App\Console;
 use Illuminate\Console\Scheduling\Schedule;
 use Illuminate\Foundation\Console\Kernel as ConsoleKernel;
 use Illuminate\Support\Facades\DB;
+use Carbon\Carbon;
 
 class Kernel extends ConsoleKernel
 {
@@ -15,13 +16,14 @@ class Kernel extends ConsoleKernel
     {
         // $schedule->command('inspire')->hourly();
         $schedule->call(function(){
-            $now=new DateTime();
-            DB::table('events')->where('status','=','submit')
-            ->where('submit','>',$now)
-            ->update(['status'=>'result']);
+
+            $now=Carbon::now();
             DB::table('events')->where('status','=','participate')
-            ->where('participate','>',$now)
+            ->where('participate','<',$now)
             ->update(['status'=>'submit']);
+            DB::table('events')->where('status','=','submit')
+            ->where('submit','<',$now)
+            ->update(['status'=>'result']);
         })->everyMinute();
     }
 

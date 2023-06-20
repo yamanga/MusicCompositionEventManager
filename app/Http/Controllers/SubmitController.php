@@ -11,15 +11,28 @@ class SubmitController extends Controller
 {
     //
     public function create(string $id){
-        $eventinfo=Event::find($id);
+        $event=Event::findOrFail($id);
+        if($event->status!='submit' && $event->status!='participate'){
+            return back();
+        }
+        if($event->participants->doesntContain('id',Auth::user()->id)){
+            return back();
+        }
+        if($event->submits->contains('id',Auth::user()->id)){
+            return back();
+        }
         return view('submit',compact('eventinfo'));
     }
 
     public function store(string $id, Request $request){
+        $event=Event::findOrFail($id);
+        if($event->status!='submit' && $event->status!='participate'){
+            return back();
+        }
         $request->validate([
             'link'=>'required|url'
         ]);
-        if(Event::find(id)->participants->doesntContain('id',Auth::user()->id)){
+        if($event->participants->doesntContain('id',Auth::user()->id)){
             return back();
         }
         Submit::create([

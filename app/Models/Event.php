@@ -7,6 +7,7 @@ use Illuminate\Database\Eloquent\Model;
 use Illuminate\Database\Eloquent\Relations\BelongsTo;
 use Illuminate\Database\Eloquent\Relations\HasMany;
 use Illuminate\Database\Eloquent\Relations\BelongsToMany;
+use Illuminate\Database\Eloquent\Relations\HasOne;
 
 class Event extends Model
 {
@@ -17,7 +18,9 @@ class Event extends Model
         'detail',
         'participate',
         'submit',
-        'organizer_id'
+        'organizer_id',
+        'status',
+        'result_type'
     ];
 
 
@@ -47,6 +50,15 @@ class Event extends Model
     public function participants(): BelongsToMany
     {
         return $this->belongsToMany(User::class, 'event_participants', 'event_id', 'participant_id');
+    }
+    /**
+     * Get the result associated with the Event
+     *
+     * @return \Illuminate\Database\Eloquent\Relations\HasOne
+     */
+    public function result(): HasOne
+    {
+        return $this->hasOne(Result::class);
     }
 
 }

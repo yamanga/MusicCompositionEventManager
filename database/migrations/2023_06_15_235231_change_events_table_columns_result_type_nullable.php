@@ -13,7 +13,6 @@ return new class extends Migration
     {
         Schema::table('events', function (Blueprint $table) {
             //
-            $table->string('status')->default(NULL)->change();
             $table->string('result_type')->nullable()->change();
         });
     }
@@ -25,7 +24,6 @@ return new class extends Migration
     {
         Schema::table('events', function (Blueprint $table) {
             //
-            $table->string('status')->default()->change();
             $table->string('result_type')->nullable(false)->change();
         });
     }

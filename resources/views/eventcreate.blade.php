@@ -5,7 +5,7 @@
     <meta charset="UTF-8">
     <meta http-equiv="X-UA-Compatible" content="IE=edge">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>MCEM</title>
+    <title>イベント作成 - MCEM</title>
     @vite(['resources/sass/app.scss', 'resources/js/app.js'])
 </head>
 
@@ -24,19 +24,22 @@
         </div>
     </nav>
 
-    <div class="container">
+    <div class="container my-4">
         <h1 class="pb-4">イベント作成</h1>
 
         <form class="row g-3 needs-validation" action="{{ route('event.store') }}" method="POST">
             @csrf
             <label for="title" class="form-label">タイトル</label>
-            <input type="text" class="form-control" id="title" name="title" required>
+            <input type="text" class="form-control" id="title" name="title" value="{{ old('title') }}"
+                required>
             <label for="detail" class="form-label">説明</label>
-            <textarea class="form-control" id="detail" name="detail" required></textarea>
+            <textarea class="form-control" id="detail" name="detail" value="{{ old('detail') }}" required></textarea>
             <label for="participate" class="form-label">参加期限</label>
-            <input type="datetime-local" class="form-control" id="participate" name="participate" required>
+            <input type="datetime-local" class="form-control" id="participate" name="participate"
+                value="{{ old('participate') }}" required>
             <label for="submit" class="form-label">提出期限</label>
-            <input type="datetime-local" class="form-control" id="submit" name="submit" required>
+            <input type="datetime-local" class="form-control" id="submit" name="submit" value="{{ old('submit') }}"
+                required>
             <button class="btn btn-primary" type="submit">作成</button>
         </form>
 
