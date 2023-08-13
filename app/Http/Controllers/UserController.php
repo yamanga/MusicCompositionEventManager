@@ -32,7 +32,7 @@ class UserController extends Controller
         $request->validate([
             'username'=>'required|max:100',
             'email'=>'required|email|unique:users,email',
-            'password'=>'required|min:8|max:128'
+            'password'=>'required|min:8|max:128|same:password_comfirm'
         ]);
 
         User::create([

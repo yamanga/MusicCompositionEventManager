@@ -30,6 +30,8 @@
                 required>
             <label for="password" class="form-label">パスワード</label>
             <input type="password" class="form-control" id="password" name="password" required>
+            <label for="password_comfirm" class="form-label">確認用パスワード</label>
+            <input type="password" class="form-control" id="password_comfirm" name="password_comfirm" required>
             <button class="btn btn-primary" type="submit">登録</button>
         </form>
     </div>
