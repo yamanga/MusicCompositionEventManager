@@ -13,6 +13,8 @@ class Event extends Model
 {
     use HasFactory;
 
+    const STATUS_LIST=['participate','submit','result','finished','cancelled'];
+
     protected $fillable=[
         'title',
         'detail',

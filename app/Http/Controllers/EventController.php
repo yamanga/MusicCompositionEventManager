@@ -68,4 +68,37 @@ class EventController extends Controller
         $event->save();
         return redirect()->route('event.manage',$id);
     }
+
+    public function search(Request $request){
+        if(!array_key_exists('keyword',$request->query())){
+            return view('searchevent');
+        }
+        $keyword=$request->input('keyword');
+        $query=Event::query();
+        if($keyword!=NULL){
+            $keywords=$this->getKeywordArray($keyword);
+            $this->keywordSearch($query,$keywords);
+        }
+        foreach(Event::STATUS_LIST as $status){
+            if($request->input($status)!=TRUE){
+                $query->where('status','!=',$status);
+            }
+        }
+        $events=$query->orderBy('created_at','desc')->paginate(10);
+        return view('searchevent',compact('events'));
+    }
+
+    private function getKeywordArray(string $keyword){
+        $keyword_unify_space=mb_convert_kana($keyword,'s');
+        $keyword_array=preg_split('/[\s]+/',$keyword_unify_space);
+        return $keyword_array;
+    }
+    private function keywordSearch($query,array $keywords){
+        $query->where(function($q)use($keywords){
+            foreach($keywords as $keyword){
+                $q->orWhere('title','like','%'.addcslashes($keyword,'%_\\').'%')
+                ->orWhere('detail','like','%'.addcslashes($keyword,'%_\\').'%');
+            }
+        });
+    }
 }
