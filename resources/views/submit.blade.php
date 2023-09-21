@@ -5,7 +5,7 @@
     <meta charset="UTF-8">
     <meta http-equiv="X-UA-Compatible" content="IE=edge">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>MCEM</title>
+    <title>楽曲提出 - MCEM</title>
     @vite(['resources/sass/app.scss', 'resources/js/app.js'])
 </head>
 
@@ -18,23 +18,27 @@
             </div>
             <ul class="navbar-nav ms-auto ">
                 <li class="nav-item">
-                    @auth
-                        <a href="{{ route('mypage') }}" class="btn btn-success btn-sm">マイページ</a>
-                    @endauth
-                    @guest
-                        <a href="{{ route('login') }}" class="btn btn-outline-success btn-sm">ログイン</a>
-                    @endguest
+                    <a href="{{ route('mypage') }}" class="btn btn-success btn-sm">マイページ</a>
                 </li>
             </ul>
         </div>
     </nav>
 
     <div class="container my-4">
-        <h1>Music Composition Event manager</h1>
-        <h3>作曲イベントを簡単に開催・参加！</h3>
-        <p>ユーザー登録を行うことで簡単に作曲イベントを運営し
-            参加する事ができます。</p>
-        <a href="{{ route('event.search') }}">イベントを検索</a>
+        <p>{{ $eventinfo->title }}</p>
+        <h1>楽曲提出</h1>
+
+        <form class="row g-3 needs-validation" action="{{ route('submit.store', $eventinfo->id) }}" method="POST">
+            @csrf
+            <label for="title" class="form-label">楽曲名</label>
+            <input type="text" class="form-control" id="title" name="title" value="{{ old('title') }}">
+            <label for="link" class="form-label">リンク</label>
+            <input type="text" class="form-control" id="link" name="link" value="{{ old('link') }}"
+                required>
+
+            <button class="btn btn-primary" type="submit">提出</button>
+        </form>
+
     </div>
 </body>
 
